@@ -1,0 +1,55 @@
+# Packer crash logs
+crash.log
+crash.*.log
+
+# Packer cache directory
+packer_cache/
+
+# Plugin directory
+.packer.d/
+
+# Build artifacts
+output-*/
+builds/
+*.box
+
+# Packer variable files (may contain sensitive data)
+*.pkrvars.hcl
+*.auto.pkrvars.hcl
+variables.pkrvars.hcl
+
+# Environment files
+.env
+.env.*
+*.pem
+*.key
+
+# Cloud provider credentials
+*credentials*
+*secret*
+*.json
+!package.json
+!package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Terraform state files (if using Terraform alongside Packer)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Log files
+*.log
