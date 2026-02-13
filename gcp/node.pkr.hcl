@@ -6,7 +6,7 @@ source "googlecompute" "gpu-node" {
   ssh_username            = var.ssh_username
   machine_type            = var.machine_type
 
-  
+
 
   image_name        = var.image_name
   image_description = "Debian 12 GPU Optimized with drivers and health checks"

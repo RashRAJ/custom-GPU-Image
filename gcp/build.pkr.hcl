@@ -37,6 +37,10 @@ build {
     script = "script/monitoring-setup.sh"
   }
 
+  provisioner "shell" {
+    script = "script/ml-frameworks-script.sh"
+  }
+
 
   post-processor "shell-local" {
     inline = [
