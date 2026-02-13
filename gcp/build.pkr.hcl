@@ -1,17 +1,17 @@
 build {
-  sources = ["source.googlecompute.rtx6000-node"]
+  sources = ["source.googlecompute.gpu-node"]
 
   provisioner "shell" {
     inline = [
-      "set -e",  
+      "set -e",
       "sudo apt update",
       "sudo apt -y dist-upgrade"
-    ]  
+    ]
   }
-  
+
   provisioner "shell" {
     expect_disconnect = true
-    inline = ["sudo reboot"]  
+    inline            = ["sudo reboot"]
   }
 
   provisioner "shell" {
@@ -21,7 +21,7 @@ build {
       "sudo apt install -y dkms",
       "sudo apt install -y linux-headers-$(uname -r)",
       "sudo apt install -y build-essential"
-    ]  
+    ]
   }
 
   provisioner "shell" {
@@ -30,8 +30,7 @@ build {
 
   # GPU Persistence Mode
   provisioner "shell" {
-    script = "script/performace-script.sh"
-
+    script = "script/performance-script.sh"
   }
 
   provisioner "shell" {
@@ -39,11 +38,11 @@ build {
   }
 
 
-post-processor "shell-local" {
-  inline = [
-    "echo '=== Image Build Complete ==='",
-    "echo 'Image ID: ${build.ID}'",  # Local info only
-    "date"
-  ]
-}
+  post-processor "shell-local" {
+    inline = [
+      "echo '=== Image Build Complete ==='",
+      "echo 'Image ID: ${build.ID}'", # Local info only
+      "date"
+    ]
+  }
 }

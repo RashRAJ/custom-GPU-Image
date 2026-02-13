@@ -40,11 +40,40 @@ packer validate .
 ```
 Validates the syntax and configuration of your templates.
 
+To validate with a variables file:
+```bash
+packer validate --var-file=example.pkrvars.hcl .
+```
+
 ### 4. Build Images
 ```bash
 packer build .
 ```
 Builds the machine images according to your template specifications.
+
+To build with a variables file:
+```bash
+packer build --var-file=example.pkrvars.hcl .
+```
+
+## Managing Images
+
+### GCP Image Management
+
+List images:
+```bash
+gcloud compute images list --filter="name:gpu-node*"
+```
+
+Delete specific image:
+```bash
+gcloud compute images delete IMAGE_NAME
+```
+
+Delete with project:
+```bash
+gcloud compute images delete IMAGE_NAME --project=PROJECT_ID
+```
 
 ## Project Structure
 
