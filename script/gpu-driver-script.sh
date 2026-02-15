@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Download and install driver repo
+# Download and install driver repo (conrifm your machine type and change accordingly)
 curl -O https://us.download.nvidia.com/tesla/590.48.01/nvidia-driver-local-repo-debian12-590.48.01_1.0-1_amd64.deb
 sudo dpkg -i nvidia-driver-local-repo-debian12-590.48.01_1.0-1_amd64.deb
 
