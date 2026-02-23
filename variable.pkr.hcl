@@ -36,3 +36,29 @@ variable "machine_type" {
   type        = string
   description = "The machine type to use for the build instance"
 }
+
+variable "enable_training" {
+  type    = bool
+  default = false
+}
+
+variable "enable_inference" {
+  type    = bool
+  default = false
+}
+variable "enable_multinode" {
+  type    = bool
+  default = false
+}
+
+variable "cuda_version" {
+  type        = string
+  description = "CUDA toolkit version"
+  default     = "12-4"
+}
+
+variable "pytorch_version" {
+  type        = string
+  description = "PyTorch version"
+  default     = "2.5.1"
+}
