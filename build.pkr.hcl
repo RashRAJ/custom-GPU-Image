@@ -1,5 +1,5 @@
 build {
-  name    = ${var.image_name}
+  name    = var.image_name
   sources = ["source.googlecompute.gpu-node"]
 
   provisioner "shell" {
