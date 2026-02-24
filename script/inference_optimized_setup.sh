@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+[ "${ENABLE_INFERENCE:-false}" = "true" ] || { echo "[INFERENCE] Disabled, skipping."; exit 0; }
+
 log() { echo "[INFERENCE] $1"; }
 
 ###############################################

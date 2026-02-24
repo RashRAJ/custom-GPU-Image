@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+[ "${ENABLE_MULTINODE:-false}" = "true" ] || { echo "[MULTINODE] Disabled, skipping."; exit 0; }
+
 echo "[*] Applying multi-node GPU performance optimizations..."
 
 ###############################################

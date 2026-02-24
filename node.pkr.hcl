@@ -9,7 +9,9 @@ source "googlecompute" "gpu-node" {
 
 
   image_name        = var.image_name
-  image_description = "Debian 12 GPU Optimized with drivers and health checks"
+  image_description = var.image_description
+
+  on_host_maintenance = "TERMINATE"
 
   tags = ["gpu-node"]
 

@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+[ "${ENABLE_TRAINING:-false}" = "true" ] || { echo "[TRAINING] Disabled, skipping."; exit 0; }
+
 log() { echo "[TRAINING] $1"; }
 
 ###############################################

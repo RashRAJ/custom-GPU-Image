@@ -1,5 +1,4 @@
 build {
-  name    = var.image_name
   sources = ["source.googlecompute.gpu-node"]
 
   provisioner "shell" {
@@ -51,18 +50,18 @@ build {
 
   # Workload-specific optimizations (controlled via variables)
   provisioner "shell" {
-    script = "script/training_optimized_setup.sh"
-    when   = var.enable_training ? "always" : "never"
+    script = "script/training_optimized_script.sh"
+    environment_vars = ["ENABLE_TRAINING=${var.enable_training}"]
   }
   # Inference Layer (vLLM, TensorRT-LLM)
   provisioner "shell" {
     script = "script/inference_optimized_setup.sh"
-    when   = var.enable_inference ? "always" : "never"
+    environment_vars = ["ENABLE_INFERENCE=${var.enable_inference}"]
   }
   #Multi-node Layer (NCCL/UCX tuning, RDMA)
   provisioner "shell" {
     script = "script/multinode_performance_tuning.sh"
-    when   = var.enable_multinode ? "always" : "never"
+    environment_vars = ["ENABLE_MULTINODE=${var.enable_multinode}"]
   }
 
   post-processor "shell-local" {

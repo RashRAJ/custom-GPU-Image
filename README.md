@@ -102,13 +102,13 @@ Each layer is optional and can be enabled independently.
 ### **1. Validate the template**
 
 ```bash
-packer validate -var-file=example.pkrvars.hcl build.pkr.hcl
+packer validate -var-file=example.pkrvars.hcl .
 ```
 
 ### **2. Build a general‑purpose GPU image**
 
 ```bash
-packer build -var-file=example.pkrvars.hcl build.pkr.hcl
+packer build -var-file=example.pkrvars.hcl .
 ```
 
 This includes:
@@ -122,7 +122,7 @@ This includes:
 ensure you set 'enable_training  = true'
 
 ```bash
-packer build -var-file=example.pkrvars.hcl  build.pkr.hcl
+packer build -var-file=example.pkrvars.hcl .
 ```
 
 Adds:
