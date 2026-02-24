@@ -90,6 +90,7 @@ Each layer is optional and can be enabled independently.
 ## **Prerequisites**
 
 - HashiCorp Packer  
+- plugin
 - A GPU‑enabled VM base image (GCP, AWS, Azure, or on‑prem)  
 - Ubuntu 22.04 LTS recommended  
 - NVIDIA GPUs (Ampere, Hopper, Blackwell, or newer)  
