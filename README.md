@@ -22,11 +22,11 @@ Designed for **training**, **inference**, and **multi-node distributed** workloa
 
 ## Why This Project Exists
 
-Every time you spin up a new GPU node, you end up doing the same thing: installing drivers, CUDA, PyTorch, tuning sysctl knobs, fighting dependency conflicts — burning hours and cloud credits before any real work starts.
+Every time you spin up a new GPU node, you end up doing the same thing: installing drivers, CUDA, PyTorch, tuning sysctl knobs, fighting dependency conflicts, burning hours and cloud credits before any real work starts. (I know, cause i spent hours handling those for this project)
 
 This project was born out of that frustration. Instead of repeating the same setup ritual on every node, it bakes everything into a single, reproducible image. Boot it up and you're ready to train or serve immediately.
 
-It also became a way for me to explore and document the NVIDIA ecosystem — driver versions, DCGM, Fabric Manager, UCX/RDMA, NCCL tuning, and all the performance tweaks that are scattered across dozens of docs but rarely packaged together.
+It also became a way for me to explore and document the NVIDIA ecosystem; driver versions, DCGM, Fabric Manager, UCX/RDMA, NCCL tuning, and all the performance tweaks that are scattered across dozens of docs but rarely packaged together.
 
 ---
 
