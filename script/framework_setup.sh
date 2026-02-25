@@ -16,38 +16,21 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 
 ###############################################
-# Install uv
+# Install uv (available system-wide for users)
 ###############################################
 log "Installing uv..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.local/bin:$PATH"
+sudo cp "$HOME/.local/bin/uv" /usr/local/bin/uv
+sudo cp "$HOME/.local/bin/uvx" /usr/local/bin/uvx
 
 ###############################################
-# Install PyTorch (CUDA 12.1)
+# Shared ML virtual environment at /opt/ml
 ###############################################
-PYTORCH_VERSION="${PYTORCH_VERSION:-2.5.1}"
-log "Installing PyTorch ${PYTORCH_VERSION}..."
-uv pip install \
-    torch==${PYTORCH_VERSION} \
-    torchvision \
-    torchaudio \
-    --index-url https://download.pytorch.org/whl/cu121
+log "Creating shared ML venv at /opt/ml..."
+sudo python3 -m venv /opt/ml
+sudo /opt/ml/bin/pip install --upgrade pip
 
-###############################################
-# Install Core ML Libraries
-###############################################
-log "Installing ML libraries..."
-uv pip install \
-    transformers \
-    accelerate \
-    tokenizers \
-    sentencepiece \
-    hf_transfer \
-    triton \
-    xformers \
-    flash-attn --no-build-isolation \
-    cupy-cuda12x \
-    cupynumeric \
-    warp-lang
+# Expose /opt/ml to all users on login
+echo 'export PATH=/opt/ml/bin:$PATH' | sudo tee /etc/profile.d/ml-venv.sh
 
 log "Framework layer complete."

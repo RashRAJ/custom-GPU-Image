@@ -54,11 +54,23 @@ variable "enable_multinode" {
 variable "cuda_version" {
   type        = string
   description = "CUDA toolkit version"
-  default     = "12-4"
+  default     = "13.1"
 }
 
 variable "pytorch_version" {
   type        = string
   description = "PyTorch version"
   default     = "2.5.1"
+}
+
+variable "driver_version" {
+  type        = string
+  description = "NVIDIA driver version"
+  default     = "590.48.01"
+}
+
+variable "disk_size" {
+  type        = number
+  description = "Boot disk size in GB"
+  default     = 100
 }

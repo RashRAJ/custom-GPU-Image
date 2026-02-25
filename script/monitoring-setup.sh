@@ -5,42 +5,40 @@ log() {
     echo "[monitoring] $1"
 }
 
-log "Removing any existing DCGM packages..."
-if dpkg -l | grep -q datacenter-gpu-manager; then
-    sudo apt purge -y datacenter-gpu-manager datacenter-gpu-manager-config || true
-fi
-
-log "Updating apt..."
-sudo apt-get update -y
-
 ###############################################
-# 1. Detect CUDA major version correctly
+# 1. Detect CUDA major version
 ###############################################
-# nvidia-smi reports CUDA version directly; use that instead of driver version
-CUDA_VERSION=$(nvidia-smi --query-gpu=cuda_version --format=csv,noheader | head -n 1 | cut -d'.' -f1)
-
-if [[ -z "$CUDA_VERSION" ]]; then
-    log "ERROR: Could not detect CUDA version from nvidia-smi."
+CUDA_MAJOR=$(/usr/local/cuda/bin/nvcc --version 2>/dev/null | grep -oP 'release \K\d+' || echo "")
+if [[ -z "${CUDA_MAJOR}" ]]; then
+    log "ERROR: Could not detect CUDA major version. base.sh must run before monitoring-setup.sh."
     exit 1
 fi
-
-log "Detected CUDA major version: $CUDA_VERSION"
-
-###############################################
-# 2. Install DCGM matching CUDA version
-###############################################
-# Package naming pattern: datacenter-gpu-manager-<major>-cuda<major>
-# Example: datacenter-gpu-manager-4-cuda12
-PKG="datacenter-gpu-manager-4-cuda${CUDA_VERSION}"
-
-log "Attempting to install $PKG..."
-sudo apt-get install -y --install-recommends "$PKG" || {
-    log "Package $PKG not found. Falling back to generic datacenter-gpu-manager."
-    sudo apt-get install -y datacenter-gpu-manager
-}
+log "Detected CUDA major version: ${CUDA_MAJOR}"
 
 ###############################################
-# 3. Enable DCGM services
+# 2. Purge old DCGM packages
+###############################################
+log "Removing old DCGM packages (if any)..."
+sudo dpkg --list datacenter-gpu-manager &> /dev/null && \
+    sudo apt purge --yes datacenter-gpu-manager || true
+
+sudo dpkg --list datacenter-gpu-manager-config &> /dev/null && \
+    sudo apt purge --yes datacenter-gpu-manager-config || true
+
+###############################################
+# 3. Install DCGM 4 for the correct CUDA version
+###############################################
+log "Installing datacenter-gpu-manager-4-cuda${CUDA_MAJOR}..."
+sudo apt-get update -y
+sudo apt-get install --yes --install-recommends \
+    "datacenter-gpu-manager-4-cuda${CUDA_MAJOR}"
+
+# Verify installation
+DCGM_VER=$(dpkg -s "datacenter-gpu-manager-4-cuda${CUDA_MAJOR}" 2>/dev/null | awk '/^Version:/{print $2}')
+log "DCGM 4 installed: ${DCGM_VER}"
+
+###############################################
+# 4. Enable DCGM services
 ###############################################
 if systemctl list-unit-files | grep -q nvidia-dcgm; then
     log "Enabling DCGM service..."
@@ -49,7 +47,7 @@ if systemctl list-unit-files | grep -q nvidia-dcgm; then
 fi
 
 ###############################################
-# 4. Enable Fabric Manager if present
+# 5. Enable Fabric Manager if present
 ###############################################
 if systemctl list-unit-files | grep -q nvidia-fabricmanager; then
     log "Enabling NVIDIA Fabric Manager..."
@@ -58,7 +56,7 @@ if systemctl list-unit-files | grep -q nvidia-fabricmanager; then
 fi
 
 ###############################################
-# 5. Optional: Install DCGM Exporter for Prometheus
+# 6. DCGM Exporter for Prometheus
 ###############################################
 if ! dpkg -l | grep -q dcgm-exporter; then
     log "Installing DCGM Exporter..."

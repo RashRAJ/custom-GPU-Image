@@ -36,22 +36,18 @@ sudo sysctl -p
 # 4. NUMA + topology tools
 ###############################################
 
-sudo apt-get update -y
 sudo apt-get install -y \
     numactl libnuma1 libnuma-dev \
     hwloc cpuset \
     linux-tools-common linux-tools-$(uname -r)
 
 ###############################################
-# 5. CPU governor: performance mode
+# 5. Disable irqbalance
 ###############################################
 
-if command -v cpupower >/dev/null 2>&1; then
-    sudo cpupower frequency-set -g performance || true
+if systemctl list-unit-files | grep -q irqbalance; then
+    sudo systemctl disable irqbalance || true
+    sudo systemctl stop irqbalance || true
 fi
 
-###############################################
-# 6. Disable irqbalance (optional)
-###############################################
-
-if systemctl list
+echo "[*] Performance optimizations complete."
